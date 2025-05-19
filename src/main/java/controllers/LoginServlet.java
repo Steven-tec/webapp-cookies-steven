@@ -8,6 +8,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.LoginService;
+import service.LoginServiceImplement;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,16 +27,19 @@ public class LoginServlet extends HttpServlet {
     // Método que maneja las solicitudes GET (por ejemplo, cuando se accede a /login directamente)
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Obtiene todas las cookies enviadas por el cliente, si no hay, crea un arreglo vacío
+        /* Obtiene todas las cookies enviadas por el cliente, si no hay, crea un arreglo vacío
         Cookie[] cookies = req.getCookies() != null ? req.getCookies() : new Cookie[0];
 
         // Busca si existe una cookie con el nombre "username"
         Optional<String> cookieOptional = Arrays.stream(cookies)
                 .filter(c -> "username".equals(c.getName())) // Filtra por nombre "username"
                 .map(Cookie::getValue)                        // Obtiene el valor de la cookie
-                .findAny();                                   // Toma cualquier coincidencia (si existe)
+                .findAny(); */                                  // Toma cualquier coincidencia (si existe)
 
         // Si la cookie existe, el usuario ya inició sesión anteriormente
+
+        LoginService auth= new LoginServiceImplement();
+        Optional<String> cookieOptional = auth.getUsername(req);
         if (cookieOptional.isPresent()) {
             // Establece el tipo de contenido de la respuesta como HTML con codificación UTF-8
             resp.setContentType("text/html;charset=UTF-8");
